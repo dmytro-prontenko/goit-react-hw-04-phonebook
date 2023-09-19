@@ -22,7 +22,6 @@ const AddContact = props => {
         </li>
         <li>
           <label htmlFor="number">Number</label>
-
           <input
             id="number"
             type="tel"
