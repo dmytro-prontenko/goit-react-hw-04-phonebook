@@ -1,33 +1,31 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import 'react-toastify/dist/ReactToastify.css';
 
-const INITIAL_STATE = {
-  name: '',
-  number: '',
-};
+const Form = ({ addContact }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-class Form extends Component {
-  state = {
-    ...INITIAL_STATE,
+  const mapState = {
+    name: setName,
+    number: setNumber,
   };
 
-  handleChangeInput = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const handleChangeInput = e => {
+    mapState[e.target.name](e.target.value);
   };
 
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
-    const { name, number } = this.state;
-    this.props.addContact({ name, number });
-    this.setState({ number: '', name: '' });
+    addContact({ name, number });
+    setName('');
+    setNumber('');
   };
 
-  render() {
-    const { name, number } = this.state;
-    return (
+  return (
+    <>
       <>
-        <form className="contact-form" onSubmit={this.onSubmit}>
+        <form className="contact-form" onSubmit={onSubmit}>
           <label htmlFor="name">
             Name
             <input
@@ -37,7 +35,7 @@ class Form extends Component {
               pattern="^[\p{L}' ]+$"
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
               required
-              onChange={this.handleChangeInput}
+              onChange={handleChangeInput}
               value={name}
             />
           </label>
@@ -51,16 +49,16 @@ class Form extends Component {
               title="Phone number must be like +380*********"
               placeholder="+38**********"
               required
-              onChange={this.handleChangeInput}
+              onChange={handleChangeInput}
               value={number}
             />
           </label>
           <button type="submit">Add contact</button>
         </form>
       </>
-    );
-  }
-}
+    </>
+  );
+};
 
 Form.propTypes = {
   addContact: PropTypes.func,
